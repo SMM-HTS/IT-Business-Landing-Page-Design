@@ -1,0 +1,872 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Commenter AI - Grow on LinkedIn</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0a66c2;
+            --primary-light: #eef6fe;
+            --secondary: #ff7a59;
+            --dark: #1d1d1d;
+            --light: #f8f9fa;
+            --gray: #6e6e6e;
+            --light-gray: #e0e0e0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #ffffff;
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #004182 100%);
+            padding: 4rem 1rem 6rem;
+            color: #fff;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1611944212129-29977ae1398c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') center/cover no-repeat;
+            opacity: 0.15;
+            z-index: 0;
+        }
+
+        header .container {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        header p {
+            font-size: 1.25rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            opacity: 0.9;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 1.5rem;
+            background: var(--light);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+        }
+
+        nav a:hover {
+            background: var(--primary-light);
+        }
+
+        .section {
+            padding: 5rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .section-title p {
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+
+        .hero {
+            text-align: center;
+            margin-top: -4rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-card {
+            background: white;
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            box-shadow: 0 10px 30px rgba(0, 86, 210, 0.15);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            line-height: 1.3;
+        }
+
+        .hero p {
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            font-size: 1.1rem;
+            color: var(--gray);
+        }
+
+        .cta-btn {
+            background: var(--primary);
+            color: #fff;
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cta-btn:hover {
+            background: #084a94;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(10, 102, 194, 0.3);
+        }
+
+        .cta-btn.secondary {
+            background: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .cta-btn.secondary:hover {
+            background: var(--primary-light);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature {
+            background: var(--light);
+            padding: 2.5rem 2rem;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            text-align: center;
+            border: 1px solid var(--light-gray);
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            border-color: var(--primary-light);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: var(--primary);
+            font-size: 1.75rem;
+        }
+
+        .feature h3 {
+            color: var(--dark);
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        .feature p {
+            font-size: 1rem;
+            color: var(--gray);
+        }
+
+        .testimonial {
+            background: url('https://images.unsplash.com/photo-1521791055366-0d553872125f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1469&q=80') center/cover no-repeat;
+            padding: 6rem 1rem;
+            position: relative;
+            color: white;
+            text-align: center;
+            border-radius: 16px;
+            overflow: hidden;
+            margin: 4rem 0;
+        }
+
+        .testimonial::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 102, 194, 0.85);
+        }
+
+        .testimonial-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .testimonial blockquote {
+            font-style: italic;
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .testimonial-author img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+        }
+
+        .testimonial-author-info h4 {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .testimonial-author-info p {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .pricing-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border: 1px solid var(--light-gray);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card.popular {
+            border: 1px solid var(--primary);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--primary);
+            color: white;
+            padding: 0.25rem 1.5rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border-bottom-left-radius: 16px;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .pricing-card h3 {
+            color: var(--dark);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .price {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 1.5rem 0;
+        }
+
+        .price span {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--gray);
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .pricing-features li {
+            padding: 0.5rem 0;
+            color: var(--gray);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pricing-features li i {
+            color: var(--primary);
+        }
+
+        .demo {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            margin: 5rem 0;
+        }
+
+        .demo-content {
+            flex: 1;
+        }
+
+        .demo-image {
+            flex: 1;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .demo-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: var(--gray);
+        }
+
+        .faq {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            margin-bottom: 1rem;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            background: var(--light);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-answer.active {
+            padding: 0 1.5rem 1.5rem;
+            max-height: 500px;
+        }
+
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 5rem 1rem 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: #b0b0b0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-links a {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 3rem;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #b0b0b0;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.2rem;
+            }
+
+            header p {
+                font-size: 1.1rem;
+            }
+
+            nav {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .demo {
+                flex-direction: column;
+            }
+
+            .hero h2 {
+                font-size: 2rem;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>Grow Your LinkedIn Presence 10X Faster</h1>
+            <p>Commenter AI helps you engage authentically with AI-generated comments that sound just like you, saving you hours each week.</p>
+            <button class="cta-btn">
+                Start Free Trial <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </header>
+
+    <nav>
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#testimonials">Testimonials</a>
+        <a href="#faq">FAQ</a>
+    </nav>
+
+    <section class="section hero">
+        <div class="hero-card">
+            <h2>Write Better Comments. Build Meaningful Connections.</h2>
+            <p>Our AI analyzes content and generates thoughtful, personalized comments that help you stand out and grow your network authentically.</p>
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <button class="cta-btn">
+                    Try It Free <i class="fas fa-comment-dots"></i>
+                </button>
+                <button class="cta-btn secondary">
+                    See Demo <i class="fas fa-play-circle"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="section-title">
+            <h2>Why Choose Commenter AI</h2>
+            <p>We combine advanced AI with human-like understanding to create comments that actually sound like you wrote them.</p>
+        </div>
+
+        <div class="features" id="features">
+            <div class="feature">
+                <div class="feature-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h3>Smart AI Technology</h3>
+                <p>Our AI understands context and generates relevant, engaging comments tailored to each post.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">
+                    <i class="fas fa-user-edit"></i>
+                </div>
+                <h3>Your Unique Voice</h3>
+                <p>Customize tone, style, and personality so comments reflect your authentic self.</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Proven Results</h3>
+                <p>Users see 3-5x more profile views and connection requests within weeks.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="demo" id="how-it-works">
+            <div class="demo-content">
+                <h2 style="font-size: 2rem; color: var(--primary); margin-bottom: 1.5rem;">How Commenter AI Works</h2>
+                <p style="color: var(--gray); margin-bottom: 2rem;">Simply paste a LinkedIn post URL or text, and our AI generates multiple comment options for you to choose from or customize further.</p>
+                <ul style="list-style: none;">
+                    <li style="padding: 0.75rem 0; display: flex; gap: 1rem;">
+                        <div style="background: var(--primary-light); color: var(--primary); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <div>
+                            <h4 style="margin-bottom: 0.25rem;">Analyze Content</h4>
+                            <p style="color: var(--gray);">AI scans the post for key themes and sentiment</p>
+                        </div>
+                    </li>
+                    <li style="padding: 0.75rem 0; display: flex; gap: 1rem;">
+                        <div style="background: var(--primary-light); color: var(--primary); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <i class="fas fa-comment-alt"></i>
+                        </div>
+                        <div>
+                            <h4 style="margin-bottom: 0.25rem;">Generate Options</h4>
+                            <p style="color: var(--gray);">Get 3-5 comment suggestions in seconds</p>
+                        </div>
+                    </li>
+                    <li style="padding: 0.75rem 0; display: flex; gap: 1rem;">
+                        <div style="background: var(--primary-light); color: var(--primary); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <i class="fas fa-magic"></i>
+                        </div>
+                        <div>
+                            <h4 style="margin-bottom: 0.25rem;">Customize & Post</h4>
+                            <p style="color: var(--gray);">Edit to your liking and post directly</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="demo-image">
+                <img src="https://images.unsplash.com/photo-1611944212129-29977ae1398c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Commenter AI interface">
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number">5x</div>
+                <div class="stat-label">More Engagement</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">87%</div>
+                <div class="stat-label">Time Saved</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">10K+</div>
+                <div class="stat-label">Happy Users</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">4.9★</div>
+                <div class="stat-label">Average Rating</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="testimonial" id="testimonials">
+            <div class="testimonial-content">
+                <blockquote>"Commenter AI transformed my LinkedIn game. I went from struggling to engage to getting 10+ meaningful connections per week, all while spending 80% less time on the platform."</blockquote>
+                <div class="testimonial-author">
+                    <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="Sarah Johnson">
+                    <div class="testimonial-author-info">
+                        <h4>Sarah Johnson</h4>
+                        <p>Marketing Consultant</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="section-title" id="pricing">
+            <h2>Simple, Transparent Pricing</h2>
+            <p>Choose the plan that fits your needs. No hidden fees, cancel anytime.</p>
+        </div>
+
+        <div class="pricing-cards">
+            <div class="pricing-card">
+                <h3>Starter</h3>
+                <div class="price">$19<span>/month</span></div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check"></i> 100 AI comments/month</li>
+                    <li><i class="fas fa-check"></i> Basic customization</li>
+                    <li><i class="fas fa-check"></i> Email support</li>
+                    <li><i class="fas fa-check"></i> Analytics dashboard</li>
+                </ul>
+                <button class="cta-btn secondary" style="width: 100%;">Get Started</button>
+            </div>
+            <div class="pricing-card popular">
+                <div class="popular-badge">Most Popular</div>
+                <h3>Professional</h3>
+                <div class="price">$39<span>/month</span></div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check"></i> Unlimited AI comments</li>
+                    <li><i class="fas fa-check"></i> Advanced customization</li>
+                    <li><i class="fas fa-check"></i> Priority support</li>
+                    <li><i class="fas fa-check"></i> Full analytics</li>
+                    <li><i class="fas fa-check"></i> Browser extension</li>
+                </ul>
+                <button class="cta-btn" style="width: 100%;">Get Started</button>
+            </div>
+            <div class="pricing-card">
+                <h3>Team</h3>
+                <div class="price">$99<span>/month</span></div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check"></i> 3 user seats</li>
+                    <li><i class="fas fa-check"></i> Everything in Pro</li>
+                    <li><i class="fas fa-check"></i> Team dashboard</li>
+                    <li><i class="fas fa-check"></i> Dedicated account manager</li>
+                    <li><i class="fas fa-check"></i> Custom voice training</li>
+                </ul>
+                <button class="cta-btn secondary" style="width: 100%;">Get Started</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="section-title" id="faq">
+            <h2>Frequently Asked Questions</h2>
+            <p>Everything you need to know about Commenter AI</p>
+        </div>
+
+        <div class="faq">
+            <div class="faq-item">
+                <div class="faq-question">
+                    How does Commenter AI differ from other AI tools?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Commenter AI is specifically trained on LinkedIn engagement patterns and focuses on creating human-like, contextual comments rather than generic responses. Our technology understands professional nuances and helps you build authentic relationships, not just spam comments.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    Is there a free trial available?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer active">
+                    <p>Yes! We offer a 7-day free trial for all plans. You can test all features during this period with no credit card required. After the trial, you can choose to continue with a paid plan or cancel anytime.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    Can I customize the tone of the comments?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Absolutely. You can set your preferred tone (professional, casual, enthusiastic, etc.), writing style, and even specific phrases you commonly use. The more you use Commenter AI, the better it learns to mimic your unique voice.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    How do you ensure comments don't sound robotic?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Our AI incorporates natural language variations, emotional intelligence markers, and contextual understanding to create comments that feel genuine. We also provide multiple options so you can choose the one that sounds most like you.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="padding-bottom: 0;">
+        <div class="hero-card" style="background: linear-gradient(135deg, var(--primary) 0%, #004182 100%); color: white; text-align: center;">
+            <h2 style="color: white; margin-bottom: 1.5rem;">Ready to Transform Your LinkedIn Presence?</h2>
+            <p style="color: rgba(255,255,255,0.9); max-width: 600px; margin: 0 auto 2rem;">Join thousands of professionals growing their network effortlessly with Commenter AI.</p>
+            <button class="cta-btn" style="background: white; color: var(--primary);">
+                Start Free Trial <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Commenter AI</h3>
+                <p style="color: #b0b0b0; margin-bottom: 1.5rem;">The smartest way to grow your professional network on LinkedIn.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Product</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Features</a></li>
+                    <li><a href="#">Pricing</a></li>
+                    <li><a href="#">How It Works</a></li>
+                    <li><a href="#">Testimonials</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Company</h3>
+                <ul class="footer-links">
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Press</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Legal</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                    <li><a href="#">GDPR</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Commenter AI. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctaButtons = document.querySelectorAll('.cta-btn');
+            ctaButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    window.location.href = '#pricing';
+                });
+            });
+
+            const faqQuestions = document.querySelectorAll('.faq-question');
+            faqQuestions.forEach(question => {
+                question.addEventListener('click', () => {
+                    const answer = question.nextElementSibling;
+                    const isActive = answer.classList.contains('active');
+                    
+                    document.querySelectorAll('.faq-answer').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    
+                    document.querySelectorAll('.faq-question i').forEach(icon => {
+                        icon.className = 'fas fa-chevron-down';
+                    });
+                    
+                    if (!isActive) {
+                        answer.classList.add('active');
+                        question.querySelector('i').className = 'fas fa-chevron-up';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
